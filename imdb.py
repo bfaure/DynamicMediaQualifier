@@ -37,14 +37,14 @@ def fetch_search_results(query):
     items=soup.find_all('td',{'class':'result_text'})
     results=[]
     for item in items: 
-        results.append({item.find('a').text:["https://www.imdb.com"+item.find('a').get('href'),item.text.split("(")[1].split(")")[0]]})
+        results.append({item.find('a').text:"https://www.imdb.com"+item.find('a').get('href')})
     return results
 
 # provided a dictionary result (an element of the list returned by fetch_search_results)
 # will download the HTML for the result page and parse out attributes such as
 # user ratings, number of ratings, runtime, genre, and release date
 def fetch_result_data(search_result):
-    url=list(search_result.values())[0][0]
+    url=list(search_result.values())[0]
     html=urlopen(url).read()
     soup=BeautifulSoup(html,'lxml')
     data={'rating':soup.find('div',{'class':'ratingValue'}).find('strong').text}
@@ -62,5 +62,5 @@ def search_for_movie(title):
     data=fetch_result_data(search_results[0])
     print(data)
 
-search_for_movie('the shawshank redemption')
+search_for_movie('shawshank')
 
